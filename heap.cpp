@@ -6,11 +6,45 @@ Description:
             This file implements the Max Heap data structure using objects and 
             a number of related functions
 */
+#include <iostream>
+#include "heap.h"
 
+/*
+Strucutre:  ELEMENT
+Description:
+        This is the class that acts as the nodes for the heap tree, each
+        node has a key value that is used for ordering
+*/
+struct ELEMENT {
+    public:
+        int key;
+};
+
+/*
+Strucutre:  HEAP
+Description:
+            A max heap that is made up of an array of ELEMENT objects, the 
+            size of the heap is the current number of ELEMENTs in the tree and 
+            capcacity is the max number of ELEMENTs to be stored.
+*/
+struct HEAP {
+    public:
+        int capacity;
+        int size;
+        std::vector<ELEMENT> H;
+        // Constructor for HEAP
+        HEAP(int n) {
+            size = 0;
+            capacity = n;
+            H[n];   
+        }
+        
+        
+};
 
 /*
 Function:   intialize(n)
-Input(s):    n - integer that will be the capacity of the HEAP object
+Input(s):   n - integer that will be the capacity of the HEAP object
 Outputs:    An empty HEAP that has a defined cacpacity
 */
 HEAP initialize(int n){
@@ -38,7 +72,6 @@ void buildHeap(HEAP *heap, std::vector<ELEMENT> A, int n){
     }
 }
 
-
 /*
 Function:   maxHeapify(A, i)
 Input(s):   A - HEAP that is to be heapified
@@ -65,23 +98,6 @@ void maxHeapify(HEAP *A, int i){
         A->H[largest] = buffer;
         maxHeapify(A, i);
     }
-}
-
-
-/*
-Function:   printHeap(A)
-Input(s):     A - heap to be printed
-Outputs:    None
-*/
-void printHeap(HEAP *A){
-    std::cout << "Heap Information:" << std::endl;
-    std::cout << "Size:\t\t" << A->size << std::endl;
-    std::cout << "Capacity:\t" << A->capacity << std::endl;
-    std::cout << "Key Values: " << std::endl << "[ " << A->H[0].key;
-    for (int i = 1; i < A->H.size(); i++){
-        std::cout << ", " << A->H[i].key; 
-    }
-    std::cout << " ]" << std::endl;
 }
 
 /*
@@ -113,11 +129,11 @@ Input(s):   A - Heap to delete max value from
             flag - int for whether or not to print heap
 Output:     Key value of deleted max
 */
-int deleteMax(HEAP *A, int flag){
+ELEMENT deleteMax(HEAP *A, int flag){
     if(flag == 2){
         printHeap(A);
     }
-    int returnVal = A->H[0].key;
+    ELEMENT returnE = A->H[0];
     // Swap the elements
     ELEMENT buffer = A->H[0];
     A->H[0] = A->H[A->size - 1];
@@ -128,7 +144,7 @@ int deleteMax(HEAP *A, int flag){
     if(flag == 2){
         printHeap(A);
     }
-    return returnVal;
+    return returnE;
 
 }
 
@@ -142,7 +158,7 @@ Output:     None
 */
 void increaseKey(HEAP *A, int flag, int index, int value){
     if (index > A->size){
-        std::cout << "Array out of bounds, larger than heap size" << std::endl;
+        // TODO
         return;
     } else if (value < A->H[index].key){
         std::cout << "Value is smaller than current key value" << std::endl;
@@ -156,4 +172,20 @@ void increaseKey(HEAP *A, int flag, int index, int value){
     if (flag == 2){
         printHeap(A);
     }
+}
+
+/*
+Function:   printHeap(A)
+Input(s):     A - heap to be printed
+Outputs:    None
+*/
+void printHeap(HEAP *A){
+    std::cout << "Heap Information:" << std::endl;
+    std::cout << "Size:\t\t" << A->size << std::endl;
+    std::cout << "Capacity:\t" << A->capacity << std::endl;
+    std::cout << "Key Values: " << std::endl << "[ " << A->H[0].key;
+    for (int i = 1; i < A->H.size(); i++){
+        std::cout << ", " << A->H[i].key; 
+    }
+    std::cout << " ]" << std::endl;
 }
