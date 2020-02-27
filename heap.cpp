@@ -1,16 +1,16 @@
 /*
-Filename:   heap.cpp
-Author:     Jake Hoekstra
-Date:       2/20/20
-Description: 
-            This file implements the Max Heap data structure using objects and 
-            a number of related functions
+Filename:       heap.cpp
+Author:         Jake Hoekstra
+Date:           2/20/20
+Description:    This file implements the functions for the HEAP data structure 
+                as assigned in P01
 */
-
+#include <iostream>
+#include "heap.h"
 
 /*
 Function:   intialize(n)
-Input(s):    n - integer that will be the capacity of the HEAP object
+Input(s):   n - integer that will be the capacity of the HEAP object
 Outputs:    An empty HEAP that has a defined cacpacity
 */
 HEAP initialize(int n){
@@ -38,7 +38,6 @@ void buildHeap(HEAP *heap, std::vector<ELEMENT> A, int n){
     }
 }
 
-
 /*
 Function:   maxHeapify(A, i)
 Input(s):   A - HEAP that is to be heapified
@@ -51,37 +50,31 @@ void maxHeapify(HEAP *A, int i){
     int r = 2*i + 2;
     int largest = i;
     // Find if left child is larger than the right and store index 
-    if(l < A->size && A->H[i].key > A->H[i].key){
+    if(l < A->size && A->H[l].key > A->H[largest].key){
         largest = l;
     }
     // Find if right child is larger than the right and store index 
-    if(r < A->size && A->H[i].key > A->H[i].key){
+    if(r < A->size && A->H[r].key > A->H[largest].key){
         largest = r;
     }
     // If a child is larger than the parent, swap them and call recursively
     if (largest != i){
-        ELEMENT buffer = A->H[i];
-        A->H[i] = A->H[largest];
-        A->H[largest] = buffer;
-        maxHeapify(A, i);
+        heapSwap(A, i, largest);
+        maxHeapify(A, largest);
     }
 }
 
-
 /*
-Function:   printHeap(A)
-Input(s):     A - heap to be printed
-Outputs:    None
+Function:   heapSwap(A, i, j)
+Input(s):   A - heap to have elements swapped
+            i - first element to be swapped
+            j - second element to be swapped
+Output:     None
 */
-void printHeap(HEAP *A){
-    std::cout << "Heap Information:" << std::endl;
-    std::cout << "Size:\t\t" << A->size << std::endl;
-    std::cout << "Capacity:\t" << A->capacity << std::endl;
-    std::cout << "Key Values: " << std::endl << "[ " << A->H[0].key;
-    for (int i = 1; i < A->H.size(); i++){
-        std::cout << ", " << A->H[i].key; 
-    }
-    std::cout << " ]" << std::endl;
+void heapSwap(HEAP *A, int i, int j){
+    ELEMENT buffer = A->H[i];
+    A->H[i] = A->H[j];
+    A->H[j] = buffer;
 }
 
 /*
@@ -92,15 +85,21 @@ Input(s):   A - Heap to insert element to
 Output:     None
 */
 void insert(HEAP *A, int flag, int key){
-    if (A->size + 1 >= A->capacity){
-        std::cout << "Cannot insert element, above capacity" << std::endl;
-        return;
-    }
+    // Buffer element to add to vector
+    ELEMENT E;
+
     if (flag == 2){
         printHeap(A);
     }
-    A->H[A->size].key = key;
+    // Add element to vector
+    E.key = key;
+    A->H.push_back(E);
+
     A->size++;
+    if (A->size > A->capacity){
+        A->capacity++;
+    }
+
     buildHeap(A, A->H, A->size);
     if (flag == 2){
         printHeap(A);
@@ -113,11 +112,11 @@ Input(s):   A - Heap to delete max value from
             flag - int for whether or not to print heap
 Output:     Key value of deleted max
 */
-int deleteMax(HEAP *A, int flag){
+ELEMENT deleteMax(HEAP *A, int flag){
     if(flag == 2){
         printHeap(A);
     }
-    int returnVal = A->H[0].key;
+    ELEMENT returnE = A->H[0];
     // Swap the elements
     ELEMENT buffer = A->H[0];
     A->H[0] = A->H[A->size - 1];
@@ -128,7 +127,7 @@ int deleteMax(HEAP *A, int flag){
     if(flag == 2){
         printHeap(A);
     }
-    return returnVal;
+    return returnE;
 
 }
 
@@ -142,7 +141,7 @@ Output:     None
 */
 void increaseKey(HEAP *A, int flag, int index, int value){
     if (index > A->size){
-        std::cout << "Array out of bounds, larger than heap size" << std::endl;
+        // TODO
         return;
     } else if (value < A->H[index].key){
         std::cout << "Value is smaller than current key value" << std::endl;
@@ -156,4 +155,20 @@ void increaseKey(HEAP *A, int flag, int index, int value){
     if (flag == 2){
         printHeap(A);
     }
+}
+
+/*
+Function:   printHeap(A)
+Input(s):   A - heap to be printed
+Outputs:    None
+*/
+void printHeap(HEAP *A){
+    std::cout << "Heap Information:" << std::endl;
+    std::cout << "Size:\t\t" << A->size << std::endl;
+    std::cout << "Capacity:\t" << A->capacity << std::endl;
+    std::cout << "Key Values: " << std::endl << "[ ";
+    for (int i = 0; i < A->size; i++){
+        std::cout << A->H[i].key << " "; 
+    }
+    std::cout << " ]" << std::endl;
 }

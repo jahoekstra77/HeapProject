@@ -1,4 +1,4 @@
-# build an C++ executable named myprog from file1.cpp and file2.cpp
+# build an C++ executable named myprog from main.cpp, heap.cpp, and util.cpp
 
 # the compiler: gcc for C program, define as g++ for C++
 CC = g++
@@ -10,13 +10,13 @@ CC = g++
 
 CFLAGS = -g -Wall -std=c++11
 
-# run 'make myprog' to generate the executable
-# if any code file has been updated, running 'make myprog' will re-build the executable
+# run 'make main' to generate the executable
+# if any code file has been updated, running 'make main' will re-build the 
+# executable
 
-myprog: file1.cpp file2.cpp
-	$(CC) $(CFLAGS) -o myprog file1.cpp file2.cpp
+main: main.cpp heap.cpp util.cpp
+	$(CC) $(CFLAGS) -o main main.cpp heap.cpp util.cpp
 
-# run 'make clean' to remove the executable
-
+# run 'make clean' to remove the executable and o files
 clean: 
-    $(RM) myprog
+	$(RM) *.o *.exe
