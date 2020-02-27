@@ -7,20 +7,18 @@ Description:    This file implements the I/O commands for reading values and
 */
 #include <iostream>
 #include "util.h"
-#inlcude "heap.h"
+#include "heap.h"
 
 const int MAX_INPUT = 7;
 
 void run(){
-    char inStr[MAX_INPUT] = "ZZZZZZZ";
-    while (inStr[0] =! 'S'){
-        std::cin >> inStr;
-        if (inStr[0] == 'C'){
-            HEAP heap = initialize((int)inStr[2]);
-        }
-    }
-}
+    // char inStr[MAX_INPUT];
+    // while (inStr[0] =! 'S'){
+    //     std::cin >> inStr;
+    //     if (inStr[0] == 'C'){
+    //         HEAP heap = initialize((int)inStr[2]);
+    //     }
+    // }
 
-void readFile(){
 
 }

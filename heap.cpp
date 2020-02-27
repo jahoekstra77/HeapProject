@@ -170,5 +170,5 @@ void printHeap(HEAP *A){
     for (int i = 0; i < A->size; i++){
         std::cout << A->H[i].key << " "; 
     }
-    std::cout << " ]" << std::endl;
+    std::cout << "]" << std::endl;
 }
