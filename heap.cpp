@@ -85,21 +85,19 @@ Input(s):   A - Heap to insert element to
 Output:     None
 */
 void insert(HEAP *A, int flag, int key){
-    // Buffer element to add to vector
-    ELEMENT E;
 
     if (flag == 2){
         printHeap(A);
     }
     // Add element to vector
-    E.key = key;
-    A->H.push_back(E);
-
+    
     A->size++;
     if (A->size > A->capacity){
-        A->capacity = A->size;
+        std::cout << "Above heap capacity" << std::endl;
+        A->size--;
+        return;
     }
-
+    A->H[A->size - 1].key = key;
     buildHeap(A, A->H, A->size);
     if (flag == 2){
         printHeap(A);
@@ -113,10 +111,15 @@ Input(s):   A - Heap to delete max value from
 Output:     Key value of deleted max
 */
 ELEMENT deleteMax(HEAP *A, int flag){
+    ELEMENT returnE;
+    if (A->size <= 0){
+        std::cout << "Cannot delete from empty heap" << std::endl;
+        return returnE;
+    }
     if(flag == 2){
         printHeap(A);
     }
-    ELEMENT returnE = A->H[0];
+    returnE = A->H[0];
     // Swap the elements
     ELEMENT buffer = A->H[0];
     A->H[0] = A->H[A->size - 1];
@@ -140,8 +143,8 @@ Input(s):   A - Heap to have element's key increased
 Output:     None
 */
 void increaseKey(HEAP *A, int flag, int index, int value){
-    if (index > A->size){
-        // TODO
+    if (index >= A->size){
+        std::cout << "Element not in Heap" << std::endl;
         return;
     } else if (value < A->H[index].key){
         std::cout << "Value is smaller than current key value" << std::endl;

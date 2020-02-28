@@ -42,6 +42,7 @@ struct HEAP {
         HEAP(int n) {
             size = 0;
             capacity = n;
+            H.resize(n);
         }        
 };
 

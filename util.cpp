@@ -99,7 +99,10 @@ void run(){
             // If the command entered is not valid, inform the user
             default:
                 std::cout << "Invalid Command, please try again" << std::endl;
+                break;
         }
+        // Clear input buffer
+        while ((getchar()) != '\n'); 
     }
 }
 
@@ -110,18 +113,21 @@ Output:     None
 */
 void readFile(HEAP *heap){
     int n;
-    
+    int val;
+
     std::ifstream file;
     file.open("HEAPinput.txt");
-    std::vector<ELEMENT> V;
     
     if(file.is_open()){
         file >> n;
-        V.resize(n);
+        if(heap->capacity < n + heap->size){
+            std::cout << "Cannot read, would be above heap capacity\n";
+            return;
+        }
         for (int i = 0; i < n; i++){
-            file >> V[i].key;
+            file >> val;
+            insert(heap, 1, val);
         }
     }
-    buildHeap(heap, V, n);
 }
 
