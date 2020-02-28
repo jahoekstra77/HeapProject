@@ -7,9 +7,10 @@ Description:    This is the header file for the functions defined in the
 */
 #ifndef util_H_
 #define util_H_
+#include "heap.h"
 
 void run();
-void readFile();
+void readFile(HEAP *heap);
 
 
 #endif

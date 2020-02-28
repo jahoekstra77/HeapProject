@@ -35,6 +35,9 @@ struct HEAP {
         int capacity;
         int size;
         std::vector<ELEMENT> H;
+        // Default Constructor
+        HEAP(){
+        }
         // Constructor for HEAP
         HEAP(int n) {
             size = 0;
