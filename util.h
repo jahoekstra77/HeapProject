@@ -12,5 +12,4 @@ Description:    This is the header file for the functions defined in the
 void run();
 void readFile(HEAP *heap);
 
-
 #endif

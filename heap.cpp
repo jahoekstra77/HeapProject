@@ -97,7 +97,7 @@ void insert(HEAP *A, int flag, int key){
 
     A->size++;
     if (A->size > A->capacity){
-        A->capacity++;
+        A->capacity = A->size;
     }
 
     buildHeap(A, A->H, A->size);

@@ -15,6 +15,7 @@ const int CAP = 10;
 
 int main(){
     std::cout << std::endl;
+    
     run();
 
     std::cout << std::endl;
