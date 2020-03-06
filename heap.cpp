@@ -89,7 +89,6 @@ void insert(HEAP *A, int flag, int key){
     if (flag == 2){
         printHeap(A);
     }
-    // Add element to vector
     
     A->size++;
     if (A->size > A->capacity){
@@ -97,8 +96,12 @@ void insert(HEAP *A, int flag, int key){
         A->size--;
         return;
     }
+
     A->H[A->size - 1].key = key;
-    buildHeap(A, A->H, A->size);
+    for (int i = A->size/2 - 1; i >= 0; i--){
+        maxHeapify(A, i);
+    }
+
     if (flag == 2){
         printHeap(A);
     }

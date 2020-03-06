@@ -26,7 +26,7 @@ void run(){
     while (true){
 
         // Get user command
-        std::cout << "Please enter a command: ";
+        std::cout << "COMMAND: ";
         std::cin >> input;
         int flag, 
             index, 
@@ -35,8 +35,12 @@ void run(){
                 
         // Bitwise to uppercase
         input[0] = input[0] & 0xDF;
+
         // Switch statement to determine which command is being issued
         switch (input[0]){
+            case 'P':
+                printHeap(heap);
+                break;
             // S is the termination case, returns to main
             case 'S': 
                 std::cout << "Terminating..." << std::endl;
@@ -44,6 +48,9 @@ void run(){
             // C initializes a new heap with the user entered capacity
             case 'C':
                 std::cin >> flag;
+                if (flag <= 0){
+                    std::cout << "Error: invalid heap capacity" << std::endl;
+                }
                 *heap = initialize(flag);
                 init = true;
                 break;
@@ -58,7 +65,7 @@ void run(){
             // W writes the heap's size and value to the console
             case 'W':
                 if (!init){ // Ensures heap has been initialized
-                    std::cout << "Heap not initialized [USE 'C n']\n";
+                    std::cout << "Error: heap not initialized\n";
                     break;
                 }
                 std::cout << heap->size << std::endl;
@@ -69,7 +76,7 @@ void run(){
             // I inserts a value into the heap
             case 'I':
                 if (!init){ // Ensures heap has been initialized
-                    std::cout << "Heap not initialized [USE 'C n']\n";
+                    std::cout << "Error: heap not initialized\n";
                     break;
                 }
                 std::cin >> flag;
@@ -79,7 +86,7 @@ void run(){
             // D deletes the maximum value in the heap and outputs it to console
             case 'D':
                 if (!init){ // Ensures heap has been initialized
-                    std::cout << "Heap not initialized [USE 'C n']\n";
+                    std::cout << "Error: heap not initialized\n";
                     break;
                 }
                 std::cin >> flag;
@@ -88,7 +95,7 @@ void run(){
             // K increases the key value of an element already in the heap
             case 'K':
                 if (!init){ // Ensures heap has been initialized
-                    std::cout << "Heap not initialized [USE 'C n']\n";
+                    std::cout << "Error: heap not initialized\n";
                     break;
                 }
                 std::cin >> flag;
@@ -101,8 +108,10 @@ void run(){
                 std::cout << "Invalid Command, please try again" << std::endl;
                 break;
         }
+        
         // Clear input buffer
         while ((getchar()) != '\n'); 
+        input = "";
     }
 }
 
@@ -128,6 +137,8 @@ void readFile(HEAP *heap){
             file >> val;
             insert(heap, 1, val);
         }
+    } else {
+        std::cout <<"File 'HEAPinput.txt not in directory" << std:: endl;
     }
 }
 

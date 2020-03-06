@@ -14,8 +14,8 @@ CFLAGS = -g -Wall -std=c++11
 # if any code file has been updated, running 'make main' will re-build the 
 # executable
 
-main: main.cpp heap.cpp util.cpp
-	$(CC) $(CFLAGS) -o main main.cpp heap.cpp util.cpp
+run: main.cpp heap.cpp util.cpp
+	$(CC) $(CFLAGS) -o run main.cpp heap.cpp util.cpp
 
 # run 'make clean' to remove the executable and o files
 clean: 

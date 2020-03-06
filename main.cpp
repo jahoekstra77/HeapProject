@@ -10,9 +10,6 @@ Description:    The driver program for Project 1
 #include "heap.h"
 #include "util.h"
 
-const int N = 6;
-const int CAP = 10;
-
 int main(){
     std::cout << std::endl;
     
