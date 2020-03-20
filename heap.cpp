@@ -87,22 +87,28 @@ Output:     None
 void insert(HEAP *A, int flag, int key){
 
     if (flag == 2){
+        std::cout << "Before insert operation:" << std::endl;
         printHeap(A);
     }
     
     A->size++;
-    if (A->size > A->capacity){
-        std::cout << "Above heap capacity" << std::endl;
-        A->size--;
-        return;
+    if (A->capacity == 0){
+        A->capacity++;
+    } else if (A->size > A->capacity){
+        A->capacity = 2;
+        while(A->capacity < A->size){
+            A->capacity = 2*A->capacity;
+        }
     }
-
+    ELEMENT E;
+    A->H.push_back(E);
     A->H[A->size - 1].key = key;
     for (int i = A->size/2 - 1; i >= 0; i--){
         maxHeapify(A, i);
     }
 
     if (flag == 2){
+        std::cout << "After insert operation:" << std::endl;
         printHeap(A);
     }
 }
@@ -115,14 +121,14 @@ Output:     Key value of deleted max
 */
 ELEMENT deleteMax(HEAP *A, int flag){
     ELEMENT returnE;
-    if (A->size <= 0){
-        std::cout << "Cannot delete from empty heap" << std::endl;
-        return returnE;
-    }
+    
+    
     if(flag == 2){
+        std::cout << "Before delete max operation:" << std::endl;
         printHeap(A);
     }
     returnE = A->H[0];
+    
     // Swap the elements
     ELEMENT buffer = A->H[0];
     A->H[0] = A->H[A->size - 1];
@@ -131,8 +137,10 @@ ELEMENT deleteMax(HEAP *A, int flag){
     A->size--;
     buildHeap(A, A->H, A->size);
     if(flag == 2){
+        std::cout << "After delete max operation:" << std::endl;
         printHeap(A);
     }
+    std::cout << "Deleted max = " << returnE.key << "\n";
     return returnE;
 
 }
@@ -146,19 +154,21 @@ Input(s):   A - Heap to have element's key increased
 Output:     None
 */
 void increaseKey(HEAP *A, int flag, int index, int value){
-    if (index >= A->size){
-        std::cout << "Element not in Heap" << std::endl;
+    if (index >= A->size || index < 0){
+        std::cout << "Error: invalid index" << std::endl;
         return;
     } else if (value < A->H[index].key){
-        std::cout << "Value is smaller than current key value" << std::endl;
+        std::cout << "Error: new key is smaller than current key" << std::endl;
         return;
     }
     if (flag == 2){
+        std::cout << "Before increase key operation:" << std::endl;
         printHeap(A);
     }
     A->H[index].key = value;
     buildHeap(A, A->H, A->size);
     if (flag == 2){
+        std::cout << "After increase key operation:" << std::endl;
         printHeap(A);
     }
 }
@@ -169,12 +179,9 @@ Input(s):   A - heap to be printed
 Outputs:    None
 */
 void printHeap(HEAP *A){
-    std::cout << "Heap Information:" << std::endl;
-    std::cout << "Size:\t\t" << A->size << std::endl;
-    std::cout << "Capacity:\t" << A->capacity << std::endl;
-    std::cout << "Key Values: " << std::endl << "[ ";
+    std::cout << "Capacity = " << A->capacity << std::endl;
+    std::cout << "Size = " << A->size << std::endl;
     for (int i = 0; i < A->size; i++){
-        std::cout << A->H[i].key << " "; 
+        std::cout << A->H[i].key << std::endl; 
     }
-    std::cout << "]" << std::endl;
 }

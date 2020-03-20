@@ -9,7 +9,7 @@ Description:    This is the header file for the functions defined in the
 #define util_H_
 #include "heap.h"
 
-void run();
+char nextCommand(int *i, int *v, int *f);
 void readFile(HEAP *heap);
 
 #endif

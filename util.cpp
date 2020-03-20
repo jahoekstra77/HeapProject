@@ -13,106 +13,62 @@ Description:    This file implements the I/O commands for reading values and
 #include "heap.h"
 
 /*
-Function:       run()
-Input(s):       None
-Output:         None
-Description:    Determines the user's commands and executes them. Uses an always
-                true while loop to continually 
+Function:       nextCommand(i, v, f)
+Input(s):       i - index, key, or size
+                v - value of increase key
+                f - flag value (to print or not)
+Output:         char of command character
+Description:    Determines the command of the user and stores the corresponding
+                parameters in integers passed by value
 */
-void run(){
-    std::string input;
-    HEAP *heap = new HEAP;
-    bool init = false;
-    while (true){
-
-        // Get user command
-        std::cout << "COMMAND: ";
-        std::cin >> input;
-        int flag, 
-            index, 
-            key,
-            val;
-                
-        // Bitwise to uppercase
-        input[0] = input[0] & 0xDF;
-
-        // Switch statement to determine which command is being issued
-        switch (input[0]){
-            case 'P':
-                printHeap(heap);
+char nextCommand(int *i, int *v, int *f){
+    char c;
+    std::cin >> c;
+    // Change character to upper case
+    c = c & 0xDF;
+    while(true){
+        switch (c){
+            // Skipping over spaces, tabs, and newline characters
+            case ' ':
+            case '\t':
+            case '\n':
                 break;
-            // S is the termination case, returns to main
-            case 'S': 
-                std::cout << "Terminating..." << std::endl;
-                return;
-            // C initializes a new heap with the user entered capacity
-            case 'C':
-                std::cin >> flag;
-                if (flag <= 0){
-                    std::cout << "Error: invalid heap capacity" << std::endl;
-                }
-                *heap = initialize(flag);
-                init = true;
-                break;
-            // R reads the 'HEAPinput.txt' into a heap
+            // If stop, read, or write no more characters/numbers needed
+            case 'S':
             case 'R':
-                if (!init){ // Ensures heap has been initialized
-                    std::cout << "Heap not initialized [USE 'C n']\n";
-                    break;
-                }
-                readFile(heap);
-                break;
-            // W writes the heap's size and value to the console
             case 'W':
-                if (!init){ // Ensures heap has been initialized
-                    std::cout << "Error: heap not initialized\n";
-                    break;
-                }
-                std::cout << heap->size << std::endl;
-                for (int i = 0; i < heap->size; i++){
-                    std::cout << heap->H[i].key << std::endl;
-                }
                 break;
-            // I inserts a value into the heap
+            // If creating heap, find the intended size and put in i
+            case 'C':
+                std::cin >> *i;
+                break;
+            // If inserting, take flag and key value
             case 'I':
-                if (!init){ // Ensures heap has been initialized
-                    std::cout << "Error: heap not initialized\n";
-                    break;
-                }
-                std::cin >> flag;
-                std::cin >> key;
-                insert(heap, flag, key);
+                std::cin >> *f;
+                std::cin >> *i;
                 break;
-            // D deletes the maximum value in the heap and outputs it to console
+            // If deleting max, take flag value
             case 'D':
-                if (!init){ // Ensures heap has been initialized
-                    std::cout << "Error: heap not initialized\n";
-                    break;
-                }
-                std::cin >> flag;
-                std::cout << deleteMax(heap, flag).key << std::endl;
+                std::cin >> *f;
                 break;
-            // K increases the key value of an element already in the heap
+            // If increasing key, take the flag, index, and key values
             case 'K':
-                if (!init){ // Ensures heap has been initialized
-                    std::cout << "Error: heap not initialized\n";
-                    break;
-                }
-                std::cin >> flag;
-                std::cin >> index;
-                std::cin >> val;
-                increaseKey(heap, flag, index, val);
+                std::cin >> *f;
+                std::cin >> *i;
+                std::cin >> *v;
                 break;
-            // If the command entered is not valid, inform the user
+            // If command not recognized, inform user of invalid command
             default:
-                std::cout << "Invalid Command, please try again" << std::endl;
+                std::cout << "Invalid Command\n";
+                // Clear input if invalid command is entered
+                std::cin.sync();
                 break;
         }
-        
-        // Clear input buffer
-        while ((getchar()) != '\n'); 
-        input = "";
+        // Clear input for next command
+        std::cin.sync();
+        return c;
     }
+    
 }
 
 /*
@@ -126,19 +82,27 @@ void readFile(HEAP *heap){
 
     std::ifstream file;
     file.open("HEAPinput.txt");
+
     
     if(file.is_open()){
         file >> n;
-        if(heap->capacity < n + heap->size){
-            std::cout << "Cannot read, would be above heap capacity\n";
+        if(heap->capacity < n){
+            std::cout << "Error: array size exceeds heap capacity\n";
             return;
         }
+        *heap = initialize(heap->capacity);
+        
+        heap->size += n;
         for (int i = 0; i < n; i++){
             file >> val;
-            insert(heap, 1, val);
+            heap->H[i].key = val;
         }
+        for (int i = heap->size/2; i >= 0; i--){
+            maxHeapify(heap, i);
+        }
+        file.close();
     } else {
-        std::cout <<"File 'HEAPinput.txt not in directory" << std:: endl;
+        std::cout <<"File 'HEAPinput.txt' not in directory" << std:: endl;
     }
 }
 
